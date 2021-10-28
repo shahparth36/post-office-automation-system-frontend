@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // material-ui
 import { useTheme, styled } from "@mui/material/styles";
@@ -11,6 +11,7 @@ import Chart from "react-apexcharts";
 // project imports
 import MainCard from "../../../ui-component/cards/MainCard";
 import SkeletonTotalOrderCard from "../../../ui-component/cards/Skeleton/EarningCard";
+import axios from "../../../axios/axios";
 
 import ChartDataMonth from "./chart-data/total-order-month-line-chart";
 import ChartDataYear from "./chart-data/total-order-year-line-chart";
@@ -63,13 +64,27 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
-const TotalOrderLineChartCard = ({ isLoading }) => {
+const TotalSerivcesCard = ({ isLoading }) => {
   const theme = useTheme();
+
+  const [totalServices, setTotalServices] = useState(null);
 
   const [timeValue, setTimeValue] = useState(false);
   const handleChangeTime = (event, newValue) => {
     setTimeValue(newValue);
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get("/services");
+        setTotalServices(response.data.length);
+      } catch (error) {
+        console.log(error.response);
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -95,26 +110,6 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                       <LocalMallOutlinedIcon fontSize="inherit" />
                     </Avatar>
                   </Grid>
-                  <Grid item>
-                    <Button
-                      disableElevation
-                      variant={timeValue ? "contained" : "text"}
-                      size="small"
-                      sx={{ color: "inherit" }}
-                      onClick={(e) => handleChangeTime(e, true)}
-                    >
-                      Month
-                    </Button>
-                    <Button
-                      disableElevation
-                      variant={!timeValue ? "contained" : "text"}
-                      size="small"
-                      sx={{ color: "inherit" }}
-                      onClick={(e) => handleChangeTime(e, false)}
-                    >
-                      Year
-                    </Button>
-                  </Grid>
                 </Grid>
               </Grid>
               <Grid item sx={{ mb: 0.75 }}>
@@ -122,46 +117,17 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                   <Grid item xs={6}>
                     <Grid container alignItems="center">
                       <Grid item>
-                        {timeValue ? (
-                          <Typography
-                            sx={{
-                              fontSize: "2.125rem",
-                              fontWeight: 500,
-                              mr: 1,
-                              mt: 1.75,
-                              mb: 0.75,
-                            }}
-                          >
-                            $108
-                          </Typography>
-                        ) : (
-                          <Typography
-                            sx={{
-                              fontSize: "2.125rem",
-                              fontWeight: 500,
-                              mr: 1,
-                              mt: 1.75,
-                              mb: 0.75,
-                            }}
-                          >
-                            $961
-                          </Typography>
-                        )}
-                      </Grid>
-                      <Grid item>
-                        <Avatar
+                        <Typography
                           sx={{
-                            ...theme.typography.smallAvatar,
-                            cursor: "pointer",
-                            backgroundColor: theme.palette.primary[200],
-                            color: theme.palette.primary.dark,
+                            fontSize: "2.125rem",
+                            fontWeight: 500,
+                            mr: 1,
+                            mt: 1.75,
+                            mb: 0.75,
                           }}
                         >
-                          <ArrowDownwardIcon
-                            fontSize="inherit"
-                            sx={{ transform: "rotate3d(1, 1, 1, 45deg)" }}
-                          />
-                        </Avatar>
+                          {totalServices}
+                        </Typography>
                       </Grid>
                       <Grid item xs={12}>
                         <Typography
@@ -171,17 +137,10 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                             color: theme.palette.primary[200],
                           }}
                         >
-                          Total Order
+                          Total Services
                         </Typography>
                       </Grid>
                     </Grid>
-                  </Grid>
-                  <Grid item xs={6}>
-                    {timeValue ? (
-                      <Chart {...ChartDataMonth} />
-                    ) : (
-                      <Chart {...ChartDataYear} />
-                    )}
                   </Grid>
                 </Grid>
               </Grid>
@@ -193,8 +152,8 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
   );
 };
 
-TotalOrderLineChartCard.propTypes = {
+TotalSerivcesCard.propTypes = {
   isLoading: PropTypes.bool,
 };
 
-export default TotalOrderLineChartCard;
+export default TotalSerivcesCard;

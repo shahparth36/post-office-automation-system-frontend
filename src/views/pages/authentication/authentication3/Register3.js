@@ -7,13 +7,8 @@ import { Divider, Grid, Stack, Typography, useMediaQuery } from "@mui/material";
 // project imports
 import AuthWrapper1 from "../AuthWrapper1";
 import AuthCardWrapper from "../AuthCardWrapper";
-import Logo from "../../../../ui-component/Logo";
 import AuthRegister from "../auth-forms/AuthRegister";
-import AuthFooter from "../../../../ui-component/cards/AuthFooter";
-
-// assets
-
-// ===============================|| AUTH3 - REGISTER ||=============================== //
+import postIT from "../../../../assets/images/icons/PostITVertical.svg";
 
 const Register = () => {
   const theme = useTheme();
@@ -44,7 +39,16 @@ const Register = () => {
                 >
                   <Grid item sx={{ mb: 3 }}>
                     <Link to="#">
-                      <Logo />
+                      <img
+                        style={{
+                          display: "block",
+                          marginTop: "-50px",
+                          marginBottom: "-70px",
+                        }}
+                        src={postIT}
+                        width="300"
+                        height="250"
+                      />
                     </Link>
                   </Grid>
                   <Grid item xs={12}>

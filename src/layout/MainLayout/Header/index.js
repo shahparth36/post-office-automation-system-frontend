@@ -6,10 +6,8 @@ import { useTheme } from "@mui/material/styles";
 import { Avatar, Box, ButtonBase } from "@mui/material";
 
 // project imports
-import LogoSection from "../LogoSection";
-import SearchSection from "./SearchSection";
 import ProfileSection from "./ProfileSection";
-import NotificationSection from "./NotificationSection";
+import postIT from "../../../assets/images/icons/PostITHorizontal.png";
 
 // assets
 import { IconMenu2 } from "@tabler/icons";
@@ -33,7 +31,13 @@ const Header = ({ user, handleLeftDrawerToggle }) => {
           component="span"
           sx={{ display: { xs: "none", md: "block" }, flexGrow: 1 }}
         >
-          <LogoSection />
+          {/* <LogoSection /> */}
+          <img
+            style={{ display: "block" }}
+            src={postIT}
+            width="90"
+            height="60"
+          />
         </Box>
         <ButtonBase
           sx={{ marginRight: 10, borderRadius: "12px", overflow: "hidden" }}

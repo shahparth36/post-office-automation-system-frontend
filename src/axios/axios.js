@@ -7,7 +7,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (req) => {
     const accessToken = window.localStorage.getItem("postOfficeAccessToken");
-    console.log(accessToken);
+
     req.headers = { Authorization: `Bearer ${accessToken}` };
     return req;
   },

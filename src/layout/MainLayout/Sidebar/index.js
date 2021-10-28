@@ -16,7 +16,7 @@ import { drawerWidth } from "../../../store/constant";
 
 // ==============================|| SIDEBAR DRAWER ||============================== //
 
-const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
+const Sidebar = ({ drawerOpen, drawerToggle, window, role }) => {
   const theme = useTheme();
   const matchUpMd = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -36,12 +36,12 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
             paddingRight: "16px",
           }}
         >
-          <MenuList />
+          <MenuList role={role} />
         </PerfectScrollbar>
       </BrowserView>
       <MobileView>
         <Box sx={{ px: 2 }}>
-          <MenuList />
+          <MenuList role={role} />
           <MenuCard />
         </Box>
       </MobileView>

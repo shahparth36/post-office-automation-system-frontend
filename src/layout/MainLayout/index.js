@@ -89,7 +89,6 @@ const MainLayout = () => {
 
   const matchDownMd = useMediaQuery(theme.breakpoints.down("lg"));
   const [user, setUser] = useState(false);
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
 
   // Handle left drawer
@@ -113,11 +112,10 @@ const MainLayout = () => {
     setIsLoading(true);
     if (isLoggedIn()) {
       fetchData();
+      setIsLoading(false);
     } else {
       navigate("/login");
-      setIsLoading(false);
     }
-    setIsLoading(false);
   }, [matchDownMd]);
 
   return (
@@ -152,18 +150,12 @@ const MainLayout = () => {
           <Sidebar
             drawerOpen={leftDrawerOpened}
             drawerToggle={handleLeftDrawerToggle}
+            role={user.role}
           />
 
           {/* main content */}
           <Main theme={theme} open={leftDrawerOpened}>
             {/* breadcrumb */}
-            <Breadcrumbs
-              separator={IconChevronRight}
-              navigation={navigation}
-              icon
-              title
-              rightAlign
-            />
             <Outlet />
           </Main>
         </Box>

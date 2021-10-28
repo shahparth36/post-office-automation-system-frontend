@@ -148,7 +148,6 @@ function EnhancedTable() {
 
   const [packages, setPackages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchData() {
@@ -243,7 +242,7 @@ function EnhancedTable() {
     <>
       {isLoading ? (
         <Loader />
-      ) : isAuthenticated ? (
+      ) : (
         <TableContainer component={Paper}>
           <EnhancedTableToolbar />
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -286,8 +285,6 @@ function EnhancedTable() {
             </TableBody>
           </Table>
         </TableContainer>
-      ) : (
-        <Navigate to="/login" />
       )}
     </>
   );

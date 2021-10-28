@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 // material-ui
 import { styled, useTheme } from "@mui/material/styles";
@@ -22,6 +23,7 @@ import { drawerWidth } from "../../store/constant";
 import { SET_MENU } from "../../store/actions";
 import { AuthContext } from "../../context/auth.context";
 import axios from "../../axios/axios";
+import Loader from "../../ui-component/Loader";
 
 // assets
 import { IconChevronRight } from "@tabler/icons";
@@ -74,11 +76,21 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
+const isLoggedIn = () => {
+  return (
+    localStorage.getItem("postOfficeAccessToken") !== null &&
+    localStorage.getItem("postOfficeAccessToken") !== undefined
+  );
+};
+
 const MainLayout = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
+
   const matchDownMd = useMediaQuery(theme.breakpoints.down("lg"));
   const [user, setUser] = useState(false);
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Handle left drawer
   const leftDrawerOpened = useSelector((state) => state.customization.opened);
@@ -91,59 +103,72 @@ const MainLayout = () => {
     async function fetchData() {
       try {
         const response = await axios.get("/user");
-        console.log(response);
         setUser(response.data);
       } catch (error) {
         console.log(error.response);
         // setMessage(error.response.data.message);
+        // navigate('/login')
       }
     }
-    console.log(isAuthenticated);
-    if (isAuthenticated) {
+    setIsLoading(true);
+    if (isLoggedIn()) {
       fetchData();
+    } else {
+      navigate("/login");
+      setIsLoading(false);
     }
+    setIsLoading(false);
   }, [matchDownMd]);
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      {/* header */}
-      <AppBar
-        enableColorOnDark
-        position="fixed"
-        color="inherit"
-        elevation={0}
-        sx={{
-          bgcolor: theme.palette.background.default,
-          transition: leftDrawerOpened
-            ? theme.transitions.create("width")
-            : "none",
-        }}
-      >
-        <Toolbar>
-          <Header handleLeftDrawerToggle={handleLeftDrawerToggle} user={user} />
-        </Toolbar>
-      </AppBar>
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
+          {/* header */}
+          <AppBar
+            enableColorOnDark
+            position="fixed"
+            color="inherit"
+            elevation={0}
+            sx={{
+              bgcolor: theme.palette.background.default,
+              transition: leftDrawerOpened
+                ? theme.transitions.create("width")
+                : "none",
+            }}
+          >
+            <Toolbar>
+              <Header
+                handleLeftDrawerToggle={handleLeftDrawerToggle}
+                user={user}
+              />
+            </Toolbar>
+          </AppBar>
 
-      {/* drawer */}
-      <Sidebar
-        drawerOpen={leftDrawerOpened}
-        drawerToggle={handleLeftDrawerToggle}
-      />
+          {/* drawer */}
+          <Sidebar
+            drawerOpen={leftDrawerOpened}
+            drawerToggle={handleLeftDrawerToggle}
+          />
 
-      {/* main content */}
-      <Main theme={theme} open={leftDrawerOpened}>
-        {/* breadcrumb */}
-        <Breadcrumbs
-          separator={IconChevronRight}
-          navigation={navigation}
-          icon
-          title
-          rightAlign
-        />
-        <Outlet />
-      </Main>
-    </Box>
+          {/* main content */}
+          <Main theme={theme} open={leftDrawerOpened}>
+            {/* breadcrumb */}
+            <Breadcrumbs
+              separator={IconChevronRight}
+              navigation={navigation}
+              icon
+              title
+              rightAlign
+            />
+            <Outlet />
+          </Main>
+        </Box>
+      )}
+    </>
   );
 };
 

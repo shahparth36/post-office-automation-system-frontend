@@ -14,8 +14,6 @@ function PackageStatus() {
   const [isLoading, setIsLoading] = useState(true);
   const [Package, setPackage] = useState({});
 
-  const { isAuthenticated } = useContext(AuthContext);
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -34,7 +32,7 @@ function PackageStatus() {
     <>
       {isLoading ? (
         <Loader />
-      ) : isAuthenticated ? (
+      ) : (
         <Paper
           style={{
             padding: "15px",
@@ -85,8 +83,6 @@ function PackageStatus() {
             </Grid>
           </Grid>
         </Paper>
-      ) : (
-        <Navigate to="/login" />
       )}
     </>
   );

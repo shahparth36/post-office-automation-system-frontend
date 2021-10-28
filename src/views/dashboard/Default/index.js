@@ -79,8 +79,6 @@ const Dashboard = () => {
 
   const [isLoading, setLoading] = useState(true);
 
-  const { isAuthenticated } = useContext(AuthContext);
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -140,7 +138,7 @@ const Dashboard = () => {
     <>
       {isLoading ? (
         <Loader />
-      ) : isAuthenticated ? (
+      ) : (
         <Grid container spacing={gridSpacing}>
           <Grid item xs={12}>
             <Grid container spacing={gridSpacing}>
@@ -294,8 +292,6 @@ const Dashboard = () => {
             </Grid>
           </Grid>
         </Grid>
-      ) : (
-        <Navigate to="/login" />
       )}
     </>
   );

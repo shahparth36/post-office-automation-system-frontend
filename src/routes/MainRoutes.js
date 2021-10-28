@@ -13,6 +13,7 @@ const PackageStatus = Loadable(lazy(() => import("../views/PackageStatus")));
 const PackageList = Loadable(lazy(() => import("../views/PackageList")));
 const Profile = Loadable(lazy(() => import("../views/Profile")));
 const PackageReceipt = Loadable(lazy(() => import("../views/PackageReceipt")));
+const ServiceList = Loadable(lazy(() => import("../views/ServiceList")));
 
 const MainRoutes = {
   path: "/",
@@ -37,6 +38,10 @@ const MainRoutes = {
     {
       path: "/package/receipt/:packageId",
       element: <PackageReceipt />,
+    },
+    {
+      path: "/services",
+      element: <ServiceList />,
     },
   ],
 };
